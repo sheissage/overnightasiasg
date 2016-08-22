@@ -1,0 +1,38 @@
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+hr {
+    display: block;
+    height: 2px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    padding: 0;
+    background-color: black;
+}
+
+ p, h5 {
+   font-family: "SF Regular";
+ }
+
+.whitebox {
+  border: 2px solid black;
+  margin-top: 15px;
+}
+
+.orangeinbox {
+  color: #ff5a00;
+  margin-left: 20px;
+}
+
+.blackinbox {
+  margin-left: 20px;
+}
+
+.whiteinbox {
+  margin-left: 20px;
+  color: white;
+}

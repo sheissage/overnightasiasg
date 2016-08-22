@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+        <script>
+
+            var loadFiles = function(event) {
+                var imagediv = document.getElementById("galleryimages");
+                for(var file in event.target.files) {
+                    // <div class="col-md-4">
+                    
+                    var img = document.createElement("img");
+                    img.setAttribute("src", URL.createObjectURL(event.target.files[file]));
+
+                    var a = document.createElement("a");
+                    a.setAttribute("class", "hover-img");
+                    a.setAttribute("href", "#");
+
+                    a.appendChild(img);
+
+                    var thumb = document.createElement("div");
+                    thumb.setAttribute("class", "thumb");
+
+                    thumb.appendChild(a);
+
+                    var col_md_4 = document.createElement("div");
+                    col_md_4.setAttribute("class", "col-md-4");
+                    
+                    col_md_4.appendChild(thumb);
+
+                    imagediv.appendChild(col_md_4);
+                }
+            }
+        </script>
+
+        <div class="container">
+            <h1 class="page-title">Travel Photos</h1>
+        </div>
+
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <aside class="user-profile-sidebar">
+                        <div class="user-profile-avatar text-center">
+                            <img src="{% static 'img/overnightlogo1.png'%}" alt="Image Alternative text" title="AMaze" />
+                            <h5> {{ name }}</h5>
+                        </div>
+                        <ul class="list user-profile-nav">
+                            <li><a href="/user/profile"><i class="fa fa-user"></i>Overview</a>
+                            </li>
+                            <li><a href="/user/settings"><i class="fa fa-cog"></i>Settings</a>
+                            </li>
+                            <li><a href="/user/photos"><i class="fa fa-camera"></i>My Travel Photos</a>
+                            </li>
+                            <li><a href="/user/bookings"><i class="fa fa-clock-o"></i>Booking History</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+
+                <div class="col-md-9">
+                    <form method="POST" enctype="multipart/form-data" action="/uploadUserPics/">
+                        {% csrf_token%}
+                        <label>
+                            <span class="btn btn-primary mb20">
+                                Add new photo
+                                <input type="file" accept="image/*" onchange="loadFiles(event)" name="galleries" multiple style="display:none">
+                            </span>
+                        </label>
+                
+
+                        <div class="row row-no-gutter" id="galleryimages">
+                            {% for picture in galleries %}
+                                <div class="col-md-4">
+                                    <div class="thumb">
+                                        <a class="hover-img" href="#">
+                                            <img src="{{ picture.picture.url }}" alt="Image Alternative text"/>
+                                            <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-inner-sm hover-hold">
+                                                <!-- <div class="text-small">
+                                                </div> -->
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row" style="text-align: right">
+                            <button class="btn btn-primary btn-lg" type="submit">Upload</button>
+                        </div>
+                    </form>
+
+                    <div class="gap gap-small"></div>
+                    <ul class="pagination">
+                        <!-- <li class="active"><a href="#">1</a>
+                        </li>
+                        <li><a href="#">2</a>
+                        </li>
+                        <li><a href="#">3</a>
+                        </li>
+                        <li><a href="#">4</a>
+                        </li>
+                        <li><a href="#">5</a>
+                        </li>
+                        <li><a href="#">6</a>
+                        </li>
+                        <li><a href="#">7</a>
+                        </li>
+                        <li class="dots">...</li>
+                        <li><a href="#">10</a>
+                        </li>
+                        <li class="next"><a href="#">Next Page</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="gap"></div>
+{% endblock%}
+

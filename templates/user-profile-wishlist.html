@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+        <div class="container">
+            <h1 class="page-title">My Future Trips</h1>
+        </div>
+
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <aside class="user-profile-sidebar">
+                        <div class="user-profile-avatar text-center">
+                            <img src="img/300x300.png" alt="Image Alternative text" title="AMaze" />
+                            <h5>Zeann Ahshida</h5>
+
+                        </div>
+                       <ul class="list user-profile-nav">
+                            <li><a href="/user/profile"><i class="fa fa-user"></i>Overview</a>
+                            </li>
+                            <li><a href="/user/settings"><i class="fa fa-cog"></i>Settings</a>
+                            </li>
+                            <li><a href="/user/photos"><i class="fa fa-camera"></i>My Travel Photos</a>
+                            </li>
+                            <li><a href="/user/bookings"><i class="fa fa-clock-o"></i>Booking History</a>
+                            </li>
+                            <li><a href="user/wishlist"><i class="fa fa-heart-o"></i>Wishlist</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-md-9">
+                    <ul class="booking-list booking-list-wishlist">
+                        <li><span class="booking-item-wishlist-title"><i class="fa fa-building-o"></i> Hotel <span >added on July 1, 2016</span></span>
+                            <a class="fa fa-times booking-item-wishlist-remove" href="#" rel="tooltip" data-placement="top" title="remove from wishlist"></a>
+                            <a class="booking-item" href="#">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="booking-item-img-wrap">
+                                            <img src="img/800x600.png" alt="Image Alternative text" title="hotel 1" />
+                                            <div class="booking-item-img-num"><i class="fa fa-picture-o"></i>19</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="booking-item-rating">
+                                        </div>
+                                        <h5 class="booking-item-title">Hotel Overnight Singapore</h5>
+                                        <p class="booking-item-address"><i class="fa fa-map-marker"></i> 100 West Coast Road, Singapore 120100</p>
+                                    </div>
+                                    <div class="col-md-3"><span class="booking-item-price-from">from</span><span class="booking-item-price">SGD 188</span></span><span class="btn btn-primary">Book Now</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li><span class="booking-item-wishlist-title"><i class="fa fa-home"></i> Villa <span >added on July 15, 2016</span></span>
+                            <a class="fa fa-times booking-item-wishlist-remove" href="#" rel="tooltip" data-placement="top" title="remove from wishlist"></a>
+                            <a class="booking-item" href="#">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="booking-item-img-wrap">
+                                            <img src="img/800x600.png" alt="Image Alternative text" title="hotel 2" />
+                                            <div class="booking-item-img-num"><i class="fa fa-picture-o"></i>6</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 class="booking-item-title">Overnight Villa</h5>
+                                        <p class="booking-item-address"><i class="fa fa-map-marker"></i> 200 Jalan Sultan, Singapore 199018</p>
+                                    </div>
+                                    <div class="col-md-3"><span class="booking-item-price-from">from</span><span class="booking-item-price">SGD 108</span></span><span class="btn btn-primary">Book Now</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+{% endblock %}
+

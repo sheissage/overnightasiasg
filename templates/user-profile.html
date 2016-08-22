@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+        <div class="container">
+            <h1 class="page-title">Traveler Profile</h1>
+        </div>
+         <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <aside class="user-profile-sidebar">
+                        <div class="user-profile-avatar text-center">
+                            <img src="{% static 'img/overnightlogo1.png'%}" alt="Image Alternative text" title="AMaze" />
+                            <h5> {{ name }}</h5>
+                        </div>
+                        <ul class="list user-profile-nav">
+                            <li><a href="/user/profile"><i class="fa fa-user"></i>Overview</a>
+                            </li>
+                            <li><a href="/user/settings"><i class="fa fa-cog"></i>Settings</a>
+                            </li>
+                            <li><a href="/user/photos"><i class="fa fa-camera"></i>My Travel Photos</a>
+                            </li>
+                            <li><a href="/user/bookings"><i class="fa fa-clock-o"></i>Booking History</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-md-9">
+                    <h4>Total Traveled</h4>
+                    <ul class="list list-inline user-profile-statictics mb30">
+                        <!-- <li><i class="fa fa-dashboard user-profile-statictics-icon"></i>
+                            <h5>12540</h5>
+                            <p>Miles</p>
+                        </li>
+                        <li><i class="fa fa-globe user-profile-statictics-icon"></i>
+                            <h5>2%</h5>
+                            <p>Asia</p>
+                        </li> -->
+                        <li><i class="fa fa-building-o user-profile-statictics-icon"></i>
+                            <h5>{{cities}}</h5>
+                            <p>Cities</p>
+                        </li>
+                        <!-- <li><i class="fa fa-flag-o user-profile-statictics-icon"></i>
+                            <h5>3</h5>
+                            <p>Countries</p>
+                        </li> -->
+                        <li><i class="fa fa-plane user-profile-statictics-icon"></i>
+                            <h5>{{trips}}</h5>
+                            <p>Trips</p>
+                        </li>
+                    </ul>
+    <div id="map" style="width:100%; height:400px;"></div>
+    <input type="hidden" id='pac-input'>
+    <script>
+
+        $(document).ready(function() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-33.8902, 151.1759),
+      new google.maps.LatLng(-33.8474, 151.2631));
+  map.fitBounds(defaultBounds);
+
+  var input = document.getElementById('pac-input');
+  var searchBox = new google.maps.places.SearchBox(input);
+  var markers = [];
+
+  google.maps.event.addListener(searchBox, 'places_changed', function() {
+    var places = searchBox.getPlaces();
+
+      for (var i = 0, marker; marker = markers[i]; i++) {
+      marker.setMap(null);
+    }
+
+    markers = [];
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0, place; place = places[i]; i++) {
+      var image = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+
+      markers.push(marker);
+      bounds.extend(place.geometry.location);
+    }
+    map.fitBounds(bounds);
+  });
+
+  google.maps.event.addListener(map, 'bounds_changed', function() {
+    var bounds = map.getBounds();
+    searchBox.setBounds(bounds);
+  });
+    
+  google.maps.event.addListenerOnce(map, 'idle', function(){  
+     var request = {
+        query: '{{ address }}'
+     };
+
+     service = new google.maps.places.PlacesService(map);
+     service.textSearch(request, callback);
+
+     function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+           //grab the first item, Orlando, Florida, USA
+           var place = results[0];
+           input.value = place.formatted_address; 
+           // map.setCenter(place.geometry.location);
+           var markers = [];
+           var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              map: map,
+              icon: icon,
+              title: place.name,
+              position: place.geometry.location
+            }));
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(place.geometry.location);
+            map.setOptions({maxZoom:5});
+            map.fitBounds(bounds);
+        }
+    }
+  });
+
+        });
+
+    </script>
+    
+{% endblock %}
+
+
+

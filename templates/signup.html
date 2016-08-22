@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+		<div class="gap"></div>
+
+
+		<div class="container">
+			<div class="row" data-gutter="60">
+
+				<div class="col-md-4">
+
+					<form method="POST" enctype="multipart/form-data" action="/signupPage2/">
+						{% csrf_token %}
+						<div class="form-group form-group-icon-left">
+							<h3>Hey there! How shall I address you?</h3>
+							<br> <label>First Name</label> <input class="form-control"
+								placeholder="" name="firstname" type="text" style="padding-left: 4px;" />
+						</div>
+						<div class="form-group form-group-icon-left">
+							<label>Last Name</label> <input class="form-control"
+								placeholder="" name="lastname" type="text" style="padding-left: 4px;" />
+						</div>
+						<input class="btn btn-primary" type="submit" value="Next"/><br>
+						<br>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="gap"></div>
+{% endblock %}

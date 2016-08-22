@@ -1,0 +1,216 @@
+
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+    <form action="/book/" method="POST" name="book">
+        {% csrf_token%}
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Hotel Details</h3> <br>
+                    <h3> 
+                        <font color="#ff5a00;">
+                            {{ hotel_name }}
+                        </font>
+                    </h3>
+                    <i class="fa fa-map-marker"></i> 
+                        {{ hotel_address }}
+                    <br>
+                    {% if room %}
+                        Room Type: {{ room.roomType }}
+                    {% endif %}
+                    
+                </div>
+
+                <div class="col-md-4" style="float: right; background-color: #ed8323; border-radius:8px;">
+                    </br>
+
+                    <h5 class="item-title" style="color:white;">Booking Details</h5>
+                    <hr style="height: .5px;">
+                    <aside class="user-profile-sidebar" style="background-color: #ed8323">
+                        <div class="text-center">
+                            Total Room Price: {{ total_price }}
+                            </br>
+                            Tax: {{ total_tax }}
+                            </br>
+                            Service Charge: {{ total_servicecharge }}
+                            </br>
+                            {% if total_discount%}
+                            Discount: {{ total_discount }}
+                            {% endif %}
+                            <hr style="height: .5px;">
+                            Total Price: {{ currency }} {{ final_price }}
+                        </div>
+
+                    </aside>
+                </div>
+            </div>
+            <hr/>
+            <div class="row"> 
+                <div class="col-md-7">
+                    <h4>Estimated Time of Arrival</h4>
+                    <div class="form-group form-group-icon-left" style="width:70%">
+                        <input  class="form-control" type="text" id="eta">
+                    </div>
+                <h4>Check-in Time</h4>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span>
+                                <input class="form-control" type="number" name="checkin_hr" min="01" max="12" value=06>
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" type="number" name="checkin_min" min="00" max="59" value=00>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" type="text" value="AM" name="checkin_mer">
+                        </div>
+                    </div>
+                </div>
+                <h4>Check-out Time</h4>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input class="form-control" type="number" name="checkout_hr" min="01" max="12" value=06>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" type="number" name="checkout_min" min="00" max="59" value=00>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" type="text" value="PM" name="checkout_mer">
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <h4>Select Transfer Location</h4>
+                <h5 style="color: #ff5a00">Current transfer locations are airports only</h5>
+                <div class="form-group form-group-icon-left" style="width:70%">
+                    <input class="form-control" type="text" value="Default Airport" id="transferlocation" disabled>
+                </div>
+                <div id="transport_div">
+                    <h4>Airport Transfer</h4>
+                    <h5 style="color: #ff5a00">Please state if you require a chaffeur-driven car to your hotel.<br>
+                        This is a complimentary service.
+                    </h5>
+                    <div class="row" >
+                        <div class="col-md-6 col-xs-8"><h4><input type="radio" id="transfer_yes" name="transfer" value="true">Yes</h4><br></div> 
+                        <div class="col-md-6 col-xs-8"><h4><input type="radio" id="transfer_no" name="transfer" value="false" checked>No</h4><br></div>
+                    </div>
+                </div>
+        
+        </div>
+        <br>
+        <br>
+
+
+
+                </div>
+
+<hr/>
+
+
+
+  <!-- Payment Row-->
+  <h3>Payment Method</h3>
+      <br>
+    <div class="col-md-4">
+
+        <h4>Pay With Stripe</h4>
+
+        <!--Stripe-->
+        
+            <input type="hidden" name="cache" id="cache" value="{{ cache }}">
+            <input 
+                type="submit" 
+                value="Pay with Card"
+                data-key="pk_live_ncLqTFSAfTuKhOpVRPNNRgLi"
+                data-currency="{{ currency }}"
+                data-name="Overnight.asia"
+                data-description="Pay using Stripe"
+                data-image="{% static 'img/overnightlogo.png' %}"
+            />
+            <script src="https://checkout.stripe.com/checkout.js" id="stripe_pay"></script> 
+        </form>
+     </div>
+  </div>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="gap"></div>
+
+    <script type="text/javascript">
+        var stripe_final_price = {{stripe_final_price}}
+        window.onload = function() {
+            $(':submit').on('click', function(event) {
+                var amount = {{stripe_final_price}}
+                console.log(amount);
+                if($('#transfer_yes').is(':checked')){
+                    amount = {{total_price_transfer}}
+                }
+                
+                event.preventDefault();
+                var $button = $(this),
+                $form = $button.parents('form');
+                
+                var opts = $.extend({'amount': amount}, $button.data(), {
+                    token: function(result) {
+                        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
+                    }
+                });
+                StripeCheckout.open(opts);
+            });
+            var radio_transfer_yes = document.getElementById('transfer_yes');
+            var radio_transfer_no = document.getElementById('transfer_no');
+            // var stripe_pay = document.getElementById('stripe_pay');
+            radio_transfer_no.onclick = remove_handler;
+            radio_transfer_yes.onclick = transfer_handler;
+            // stripe_pay.onclick = pay_handler;
+        }
+
+        function transfer_handler() {
+            var span = document.createElement("span");
+            span.setAttribute('id', 'span_transfer');
+            span.innerHTML = "This will add " + {{airport_transfer}} + " to the total price.";
+            
+            var div = document.getElementById('transport_div');
+            div.appendChild(span);
+            $('.stripe-button').attr('data-amount', {{total_price_transfer}});
+        }
+
+        // function pay_handler() {
+        //     var amount = {{stripe_final_price}}
+        //     if($('#transfer_yes').is(':checked')){
+        //         amount = {{total_price_transfer}}
+        //     }
+
+        //     StripeCheckout.open({
+        //         'key':         'pk_test_NqL1tDPNyP990ViPnvUfq8XY',
+        //         'amount':      amount,
+        //         'name': "Pay now with Stripe!", 
+        //         'currency':    '{{ currency }}',
+        //         'name':        "Stripe.com",
+        //         'description': 'Checkout',
+        //         'image': "/img/documentation/checkout/marketplace.png",
+        //         'locale': 'auto'
+        //       });
+            
+        // }
+
+        function remove_handler() {
+            
+            var div = document.getElementById('transport_div');
+            var span = document.getElementById('span_transfer');
+            var price = parseFloat({{airport_transfer}});
+            stripe_final_price -= price;
+            div.removeChild(span);
+        }
+    </script>
+
+{% endblock %}

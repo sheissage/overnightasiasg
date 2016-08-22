@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+		<div class="gap"></div>
+
+
+		<div class="container">
+			<div class="row" data-gutter="60">
+
+				<div class="col-md-4">
+
+					<form method="POST" enctype="multipart/form-data" action="/signupPage3/">
+						{% csrf_token %}
+						<h3>State your gender</h3>
+						<br> <select class="form-control" placeholder="" type="text"
+							style="width: 75%" name="gender">
+							<option>Male</option>
+							<option>Female</option>
+						</select>
+						</br>
+						<div class="form-group form-group-icon-left">
+							<h3>What's you preferred email address ?</h3>
+							<br> <input class="form-control" style="padding-left: 4px;"
+								placeholder="Please type your email" name="email" type="text" />
+						</div>
+						<div class="form-group form-group-icon-left">
+
+							<input class="form-control" style="padding-left: 4px;"
+								placeholder="Password" type="password" name="password"/>
+						</div>
+						<div class="form-group form-group-icon-left">
+
+							<input class="form-control" style="padding-left: 4px;"
+								placeholder="Password Again" type="password" name="repassword"/>
+						</div>
+						
+						<!-- signup values -->
+						<input type="hidden" name="firstname" value="{{ firstname }}">
+						<input type="hidden" name="lastname" value="{{ lastname }}">
+						<input class="btn btn-primary" type="submit" value="Next" /><br>
+						<br>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="gap"></div>
+{% endblock %}

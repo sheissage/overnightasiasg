@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+        <div class="container-fluid">
+          <!-- overnight logo and traveler name -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-1 col-xs-6"><br><img src="{% static 'img/overnightlogo.png'%}" width=80px><br>
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <h4 style="text-align: right; margin-top: 25px;"> {{ cache.traveller.fname }} 
+                        <span>{{ cache.traveller.lname }}</span></h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <br>
+                <div class="col-md-2"></div>
+
+                <div class="col-md-7">
+                    <h3>Booking Confirmation Reference</h3>
+                    <hr WIDTH=100%>
+                    <h4>Booking ID: {{ book.booking_id }}</h4>
+                    <div class="whitebox"><br>
+                        <h4 class="orangeinbox">Traveler's Name/Booked Under</h4>
+                        <h4 class="blackinbox">{{ cache.traveller.fname }} {{ cache.traveller.lname }}<br>
+                        <br>
+                        <h4 class="orangeinbox">{{ cache.hotel.hotelName }}</h4>
+                        <h4 class="blackinbox"> {{ cache.hotel.hotelAddress }} <br> {{ cache.hotel.destination }}</h4>
+                
+                        {% if cache.room %}
+                            <h4 class="orangeinbox">Room Type</h4>
+                            <h4 class="blackinbox"> {{ cache.room.roomType }}</h4><br>
+                        {% endif %}
+                        <h4 class="orangeinbox">Date Selected</h4>
+                        <h4 class="blackinbox">Check In Date: {{ start }}<h4><br>
+                        <h4 class="blackinbox"> Check Out Date: {{ end }}<h4><br>
+
+                        {% if cache.room %}
+                            <h4 class="orangeinbox">Room Type</h4>
+                            <h4 class="blackinbox"> {{ cache.room.roomType }}</h4><br>
+                         {% endif %}
+                        <br><br>
+                        <h4 class="orangeinbox">Date Selected</h4>
+                        <h4 class="blackinbox">Check In Date: {{ start }}<h4><br>
+                        <h4 class="blackinbox"> Check Out Date: {{ end }}<h4><br>
+
+                        {% if cache.is_package %}
+                        <h4 class="orangeinbox">Package Selected</h4>
+                        <h4 class="blackinbox"> {{ cache.package.packageName }}</h4><br>
+                        <div class="row">
+                             <div class="col-md-1 col-xs-6">
+                                <div class="datebox" style="width: 20px; height: 20px; margin-top: 10px;"></div>
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-2 col-xs-12">
+                                <h4 class="orangeinbox">Pick-up Time</h4>
+                            </div>
+                            <div class="col-md-4 col-xs-12">
+                                <span class="datebox" style="margin-left: 20px;"></span>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <br>
+                        <hr>
+                        <div class="row">
+                            <h4 class="orangeinbox">Terms and Conditions</h4>
+                            <h4 class="blackinbox">Please note that Overnight.asia do not accept any booking cancellations.<br>
+                            There will be no reimbursements.</h4>
+                            <br><br>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+
+                <br><br><br><br><br><br><br>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-3" style="text-align: center;">
+                        <form action="/search/">
+                            <button class="btn" id="donebutton" onclick="submit">Done</button>
+                        </form>
+                        <br><br><br><br><br>
+                    </div>
+            </div>
+        </div>
+{% endblock %}

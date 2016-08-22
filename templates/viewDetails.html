@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+<!--Headline--> 
+    <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="index.html">Property Details</a>
+                </li>
+                <li><a href="#">{{hotel.destination}}</a>
+                </li>
+                <li><a href="#">{{hotel.hotelName}}</a>
+                </li>
+                <li class="active">{{hotel.hotelAddress}}</li>
+            </ul>     
+
+<!--Gallery-->
+{% if galleries %}
+    </br>
+    <center>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable booking-details-tabbable">
+                    <!-- <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#tab" data-toggle="tab"><i class="fa fa-camera"></i>Photos</a>
+                        </li>
+                    </ul> -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab-1">
+                            <div class="fotorama" data-allowfullscreen="false" data-nav="thumbs" data-width="80%" data-height="80%">>
+                                {% for gallery in galleries %}
+                                    <img src="{{ gallery.picture.url }}" alt="Image Alternative text"/>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </center>
+    </br>
+    </br>
+{% endif %}
+<!--end of gallery-->                   
+
+
+<!--Number 1-->
+
+
+    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-3">
+                <div class="form-group form-group-icon-left">
+                    <i class="fa fa-calendar input-icon input-icon-hightlight"></i> <label>Check
+                        in</label> <input class="form-control" id="start" name="start" type="text" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group form-group-icon-left">
+                    <i class="fa fa-calendar input-icon input-icon-hightlight"></i> <label>Check
+                        out</label> <input class="form-control" id="end" name="end" type="text" />
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="country" id="hotelId" value="{{ hotelId }}">
+    </div>
+    {% if error%}
+        <label style="color:red;">{{ error }}</label>
+    {% endif %}
+
+
+<!-- ROOM RATES! -->
+<hr>
+<div class="col-md-12">
+    <div class="header"> 
+    <h3 class="item-title">Normal Room Rates</h3></div>                                           
+    </div>
+
+<div class="col-md-4" style="margin: 0 auto">   
+<ul class="slimmenu" id="slimmenu">
+                        <li class="active"><a href="#" onclick="return false;"> See Available </a>
+                            <ul>
+                                {% for room in defaults %}
+                                    <li onclick="getOfferDetails({{ room.pk }}, 'room')"><a href="#" onclick="return false;">{{ room.roomType }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                   </ul>
+                <br>
+                </div>
+
+
+                            <!-- <a href="#" onclick="return false;"> -->
+                                <div class="row">                              
+                                    <div class="col-md-6">
+                                        <h5><span id="room_name"></span></h5></br>
+                                        <span id="room_description"></span>
+                                    </div>     
+                                    <div class="row">                              
+                                        <br><br>
+                                        <div class="col-md-2">
+                                            <h5>All-in</h5>
+                                            <span class="booking-item-price" id="room_price"></span>
+                                            <br>
+                                            <form name="myform" method="GET" action="/getBookingDetails/">
+                                                <span>
+                                                    <input name="start" type="hidden" id="room_dates_from">
+                                                    <input name="end" id="room_dates_to" type="hidden">
+                                                    <input name="pk" id="room_pk" type="hidden">
+                                                    <input name="hotelId" id="hotelId" type="hidden" value='{{ hotelId }}'>
+                                                    <input name="type" type="hidden" value="room">
+                                                </span>
+                                                <input type="submit" class="btn btn-primary" value="Book Now">
+                                            </form>
+                                            <br>
+                                            <br>    
+                                        </div>
+                                
+                                    </div>
+                            
+                                </div>
+                        <!--end of div row-->  
+                            <!-- </a> -->
+                    </li>   
+                    <hr> 
+                    <br>                 
+
+<hr>
+
+<div class="col-md-12">
+    <div class="header"> 
+    <h3 class="item-title">Packages Rates</h3></div>                                           
+    </div>
+
+                <div class="col-md-4" style="margin: 0 auto">   
+                    <ul class="slimmenu" id="slimmenu">
+                        <li class="active"><a href="#" onclick="return false;"> See Available </a>
+                            <ul>
+                                {% for package in packages %}
+                                    <li onclick="getOfferDetails({{ package.pk }}, 'package')"><a href="#" onclick="return false;">{{ package.packageName }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                   </ul>
+                    <br>
+                </div>
+
+
+                            <!-- <a href="#" onclick="return false;"> -->
+                                <div class="row">                              
+                                    <div class="col-md-6">
+                                        <h5><span id="package_name"></span></h5></br>
+                                        <span id="package_description"></span>
+                                    </div>     
+                                    <div class="row">                              
+                                        <br><br>
+                                        <div class="col-md-2">
+                                            <h5>All-in</h5>
+                                            <span class="booking-item-price" id="package_price"></span>
+                                            <br>
+                                            <form name="myform" method="GET" action="/getBookingDetails/">
+                                                <span>
+                                                    <input name="start" type="hidden" id="package_dates_from">
+                                                    <input name="end" id="package_dates_to" type="hidden">
+                                                    <input name="pk" id="package_pk" type="hidden">
+                                                    <input name="hotelId" id="hotelId" type="hidden" value='{{ hotelId }}'>
+                                                    <input name="type" type="hidden" value="package">
+                                                </span>
+                                                <input type="submit" class="btn btn-primary" value="Book Now">
+                                            </form>
+                                            <br>
+                                            <br>    
+                                        </div>
+                                
+                                    </div>
+                            
+                                </div>
+                        <!--end of div row-->  
+                            <!-- </a> -->
+
+                    </li>   
+                    <hr> 
+                    <br>
+
+
+<!--Number 2--> 
+<hr>
+
+<div class="col-md-12">
+    <div class="header"> 
+    <h3 class="item-title">Promotional Rates</h3></div>                                           
+    </div>
+
+                <div class="col-md-4" style="margin: 0 auto">   
+                    <ul class="slimmenu" id="slimmenu">
+                        <li class="active"><a href="#" onclick="return false;"> See Available </a>
+                            <ul>
+                                {% for promo in promos %}
+                                    <li onclick="getOfferDetails({{ promo.pk }}, 'promo')"><a href="#" onclick="return false;">{{ promo.str_start }} - {{ promo.str_end }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                   </ul>
+                <br>
+                </div>
+
+
+                            <!-- <a href="#" onclick="return false;"> -->
+                                <div class="row">                              
+                                    <div class="col-md-6">
+                                        <h5><span id="promo_name"></span></h5></br>
+                                        <span id="promo_description"></span>
+                                    </div>     
+                                    <div class="row">                              
+                                        <br><br>
+                                        <div class="col-md-2">
+                                            <h5>All-in</h5>
+                                            <span class="booking-item-price" id="promo_price"></span>
+                                            <br>
+                                            <form name="myform" method="GET" action="/getBookingDetails/">
+                                                <span>
+                                                    <input name="start" type="hidden" id="promo_dates_from">
+                                                    <input name="end" id="promo_dates_to" type="hidden">
+                                                    <input name="pk" id="promo_pk" type="hidden">
+                                                    <input name="hotelId" id="hotelId" type="hidden" value='{{ hotelId }}'>
+                                                    <input name="type" type="hidden" value="promo">
+                                                </span>
+                                                <input type="submit" class="btn btn-primary" value="Book Now">
+                                            </form>
+                                            <br>
+                                            <br>    
+                                        </div>
+                                
+                                    </div>
+                            
+                                </div>
+                        <!--end of div row-->  
+                            <!-- </a> -->
+
+                    </li>   
+                    <hr> 
+                    <br>
+
+ 
+<!--Number 3--> 
+    
+    <script>
+        function getOfferDetails(pk, type) {
+            var start = $('#start').val();
+            var end = $('#end').val();
+            $.ajax({
+                url: '/getBookingOfferDetails/',
+                type: 'GET',
+                data: {
+                    'pk': pk,
+                    'type': type,
+                    'start': start,
+                    'end': end,
+                    'hotelId': $('#hotelId').val()
+                },
+                success: function(data) {
+                    if(type=='package') {
+                        $('#package_name').text(data['package_name']);
+                        $('#package_description').text(data['package_description']);
+                        $('#package_price').text(data['package_currency'].concat(" ", data['package_total']));
+                        $('#package_dates_from').val(start);
+                        $('#package_dates_to').val(end);
+                        $('#package_pk').val(pk);
+                    }
+                    else if(type=='promo') {
+                        $('#promo_name').text(data['promo_name']);
+                        $('#promo_description').text(data['promo_description']);
+                        $('#promo_price').text(data['promo_currency'].concat(" ", data['promo_total']));
+                        $('#promo_dates_from').val(start);
+                        $('#promo_dates_to').val(end);
+                        $('#promo_pk').val(pk);
+                    }
+                    else {
+                        $('#room_name').text(data['room_name']);
+                        $('#room_description').text(data['room_description']);
+                        $('#room_price').text(data['room_currency'].concat(" ", data['room_total']));
+                        $('#room_dates_from').val(start);
+                        $('#room_dates_to').val(end);
+                        $('#room_pk').val(pk);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    console.log(textStatus);
+
+                }
+            });
+        }
+    </script> 
+{% endblock %}     
+
+
+
+
+

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+{% load timestamp_to_time %}
+
+        <div class="container">
+            <h1 class="page-title">Booking History</h1>
+        </div>
+
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <aside class="user-profile-sidebar">
+                        <div class="user-profile-avatar text-center">
+                            <img src="{% static 'img/overnightlogo1.png'%}" alt="Image Alternative text" title="AMaze" />
+                            <h5> {{ name }}</h5>
+                        </div>
+                        <ul class="list user-profile-nav">
+                            <li><a href="/user/profile"><i class="fa fa-user"></i>Overview</a>
+                            </li>
+                            <li><a href="/user/settings"><i class="fa fa-cog"></i>Settings</a>
+                            </li>
+                            <li><a href="/user/photos"><i class="fa fa-camera"></i>My Travel Photos</a>
+                            </li>
+                            <li><a href="/user/bookings"><i class="fa fa-clock-o"></i>Booking History</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+
+                <div class="col-md-9">
+                    <table class="table table-bordered table-striped table-booking-history">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Hotel</th>
+                                <th>Destination</th>
+                                <th>Order Date</th>
+                                <th>Check-In Date</th>
+                                <th>Cost</th>
+                                <th>Booking ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                    <td class="booking-history-type"><i class="fa fa-building-o"></i><small>hotel</small>
+                                    </td>
+                                    <td class="booking-history-title"> {{ booking.cache.hotel.hotelName }}</td>
+                                    <td>{{ booking.cache.hotel.destination }}</td>
+                                    <td> {{ booking.cache.created }}</td>
+                                    <td> {{ booking.cache.start | timestamp_to_time | date:"jS N, Y"}}<i class="fa fa-long-arrow-right"></i> {{ booking.cache.end | timestamp_to_time | date:"jS N, Y"}}</td>
+                                    <td> {{ booking.cache.totalRate }}</td>
+                                    <td>{{ booking.booking_id}}</td>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="gap"></div>
+{% endblock %}
+
+

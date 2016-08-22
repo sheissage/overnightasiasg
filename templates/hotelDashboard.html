@@ -1,0 +1,542 @@
+<!DOCTYPE HTML>
+<html lang="en">
+{% load staticfiles %}
+<html xmlns="https://www.w3.org/1999/html">
+
+<head>
+<title>Overnight.asia | Hotel & Property Dashboard</title>
+
+<meta charset='utf-8' />
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta name="keywords" content="Template, html, premium, themeforest" />
+<meta name="description"
+	content="Traveler - Premium template for travel companies">
+<meta name="author" content="Ahshida" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+  
+<!-- GOOGLE FONTS -->
+<link
+	href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700'
+	rel='stylesheet' type='text/css'>
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600'
+	rel='stylesheet' type='text/css'>
+<!-- /GOOGLE FONTS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" >
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/mystyles.css' %}">
+<link rel="stylesheet" href="{% static 'css/clndr.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="{% static 'js/underscore.js' %}"></script>
+<script src="{% static 'js/moment.js' %}"></script>
+<script src="{% static 'js/CLNDR.js' %}"></script>
+
+<style>
+* {
+	box-sizing: border-box;
+}
+</style>
+</head>
+
+<body>
+
+
+	<!-- FACEBOOK WIDGET -->
+	<div id="fb-root"></div>
+	<script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+	<!-- /FACEBOOK WIDGET -->
+	<div class="global-wrap">
+		<header id="main-header">
+			<div class="header-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							<a class="logo" href="landingpage.html"> <img
+								class="origin square" src="{% static 'img/overnightlogo1.png'%}"
+								style="width: 40px;" alt="Image Alternative text"
+								title="Image Title" />
+							</a>
+						</div>
+						<div class="col-md-3 col-md-offset-2"></div>
+						<div class="col-md-4">
+							<div class="top-user-area clearfix">
+								<ul class="top-user-area-list list list-horizontal list-border">
+
+									<li class="top-user-area-avatar"><a
+										href="/showUserProfile/" onclick="submit"> <img class="origin round"
+											src= "{% static 'img/40x40.png'%}" alt="Image Alternative text"
+											title="AMaze" />Hi, {{request.user.first_name}}
+									</a></li>
+									<li><a href="/logoutUser/">Logout</a></li>
+									<!--<li><a href="#">Sign In</a></li>
+									</li>
+									<li><a href="#">Sign Up</a></li>-->
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</header>
+
+	<div class="container">
+		<h2 class="page-title">Property Dashboard</h2>
+
+	<div class="container">
+	<div class="row">
+		<aside class="form-column">
+			<div class="information-column">
+	</div>
+
+		<ul class="update-property-information">
+			<br>To create Rooms click <a href="/manageContent/"> Create/Edit Hotel</a>
+			<br>To create Rooms click <a href="/managePackage/"> Create/Edit Package</a>
+
+			<br>To update property and rooms information fill the form below.<br><br>
+
+				<form method="POST" action="/addAvailability/">
+				{% csrf_token%}
+			</div>
+		</div>
+
+		<div class="input-daterange" data-date-format="yyyy-mm-dd">
+				<div class="row">
+					<!-- left column -->
+					<div class="col-md-3">
+						<div class="form-group form-group-icon-left">
+							<i class="fa fa-calendar input-icon input-icon-hightlight"></i> <label>From
+								</label> <input class="form-control" name="start" type="date" />
+								<i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+
+						<div class="input-daterange" data-date-format="yyyy-mm-dd">
+
+						<div class="form-group form-group-icon-left">
+							<i class="fa fa-calendar input-icon input-icon-hightlight"></i> <label>To
+								</label> <input class="form-control" name="end" type="date" />
+								<i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+							</div>
+								<br>
+
+								<select id="hotel" name="hotel" class="form-control" onchange="getRooms(this.value, 'price')">
+
+									{% for hotel in hotels%}
+										<option value="{{hotel.hotelId}}">{{hotel.hotelName}}</option>
+									{% endfor %}
+								</select>
+								</br>
+								<select id="roomType" name="roomType" class="form-control" onchange="getRoomInfo(this.value, 'price')">
+								</select>
+								</br>
+								<span>
+									<input type="radio" id="roomAvailable" name="available" value="true" onchange="isAvailable();" checked> Available &nbsp; &nbsp; &nbsp;
+									<input type="radio" id="roomNotAvailable" name="available" value="false" onchange="isAvailable();"> Not Avalable
+								</span>
+								</br>
+								</br>
+								<select id="roomPriceType" name="roomPriceType" class="form-control">
+									<option value="default">Room Default Rate</option>
+									<option value="season">Room Season Rate</option>
+								</select>
+								<br><input class="form-control" id="price" name="price" type="number" step="0" placeholder ="Room Rate"/>
+
+							<br>	<input class="form-control" id="discount" name="discount" type="number" step="0" placeholder ="Discount Percentage"/>
+							<br>	<input class="form-control" id="hoteltax" name="hoteltax" type="number" step="0" placeholder ="Hotel Tax"/>
+							<br>	<input class="form-control" id="servicecharge" name="servicecharge" type="number" step="0" placeholder ="Service Charge"/>
+
+					</div>
+
+			<br> <br> <button class="btn btn-primary btn-lg" type="submit">Update</button>
+			</form>
+		</div>
+	</div>
+		<div class="col-md-9">
+			</br>
+			<h2>Calendar View</h2>
+			<div class="row">
+				<div class="col-md-3">
+					<select id="hotel" name="hotel" class="form-control" onchange="getRooms(this.value, 'calendar')">
+						{% for hotel in hotels%}
+							<option value="{{hotel.hotelId}}">{{hotel.hotelName}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<select id="roomTypeCalendar" class="form-control" onchange="getRoomInfo(this.value, 'calendar')">
+					</select>
+				</div>
+				<div class="col-md-3">
+					<input class="form-control" name="roomnumber" type="number" placeholder ="Type Room Number"/>
+				</div>
+			</div>
+		</br>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="col-md-10">
+						Default Price: <span id="label_price">0</span>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="col-md-10">
+						Season Price: <span id="label_season_price">0</span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+			    <div class="cal1"></div>
+			    <div class="cal3">
+				    <script type="text/template" id="template-calendar-months">
+				        <div class="clndr-controls top">
+				            <div class="clndr-previous-button">&lsaquo;</div>
+				            <div class="clndr-next-button">&rsaquo;</div>
+				        </div>
+				        <div class="clearfix">
+				        <% _.each(months, function(cal) { %>
+				            <div class="cal">
+				                <div class="clndr-controls">
+				                    <div class="month"><%= cal.month.format('MMMM') %></div>
+				                </div>
+				                <div class="clndr-grid">
+				                    <div class="days-of-the-week">
+				                    <% _.each(daysOfTheWeek, function(day) { %>
+				                        <div class="header-day"><%= day %></div>
+				                    <% }); %>
+				                        <div class="days">
+				                        <% _.each(cal.days, function(day) { %>
+				                            <div class="<%= day.classes %>"><%= day.day %></div>
+				                        <% }); %>
+				                        </div>
+				                    </div>
+				                </div>
+				            </div>
+				        <% }); %>
+				        </div>
+				        <div class="clndr-today-button">Today</div>
+				    </script>
+			    </div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8"></div>
+					<div class="col-md-3" style="padding-bottom: 10px; text-align: right;">
+						<a href="https://www.facebook.com/overnightasia/"><i class="fa fa-facebook" aria-hidden="true" style="color: #ff8400; font-size: 18px;"></i> &nbsp;</a>
+						<a href="https://www.instagram.com/overnightasia/"><i class="fa fa-instagram" aria-hidden="true" style="color: #ff8400; font-size: 18px;"></i> &nbsp;</a>
+						<a href="https://twitter.com/overnightasia"><i class="fa fa-twitter" aria-hidden="true" style="color: #ff8400; font-size: 19px;"></i> &nbsp;</a>
+						<a href="https://www.linkedin.com/company/overnight-asia"><i class="fa fa-linkedin" aria-hidden="true" style="color: #ff8400; font-size: 20px;"></i> &nbsp;</a>
+						<a href="https://www.overnight.asia/mailto:ahshida@overnight.asia"><i class="fa fa-envelope-o" aria-hidden="true" style="color: #ff8400; font-size: 18px;"></i> &nbsp;</a>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="container">
+				<div class="row" style="font-size: 14px;">
+					<div class="col-md-1"></div>
+					<div class="col-md-3" style="color: #ff8400;">Overnight.asia All Rights Reserved</div>
+					<div class="col-md-3"></div>
+					<div class="col-md-4" style="text-align: right;"><a style="color: #ff8400;" href="https://www.overnight.asia/about.html">About |</a>
+						<a style="color: #ff8400;" href="https://www.overnight.asia/privacy-policy.html">Privacy Policy |</a>
+						 <a style="color: #ff8400;" href="https://www.overnight.asia/terms-of-website.html">Terms of Website </a> </div>
+					<div class="col-md-1"></div>
+				</div><br><br><br>
+			</div>
+		</div>
+	</footer>
+	<script src= "{% static 'js/bootstrap.js' %}"></script>
+	<script src= "{% static 'js/slimmenu.js' %}"></script>
+	<script src= "{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src= "{% static 'js/bootstrap-timepicker.js' %}"></script>
+	<script src= "{% static 'js/nicescroll.js' %}"></script>
+	<script src= "{% static 'js/dropit.js' %}"></script>
+	<script src= "{% static 'js/ionrangeslider.js' %}"></script>
+	<script src= "{% static 'js/icheck.js' %}"></script>
+	<script src= "{% static 'js/fotorama.js' %}"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
+	<script src= "{% static 'js/typeahead.js' %}"></script>
+	<script src= "{% static 'js/card-payment.js' %}"></script>
+	<script src= "{% static 'js/magnific.js' %}"></script>
+	<script src= "{% static 'js/owl-carousel.js' %}"></script>
+	<script src= "{% static 'js/fitvids.js' %}"></script>
+	<script src= "{% static 'js/tweet.js' %}"></script>
+	<script src= "{% static 'js/countdown.js' %}"></script>
+	<script src="{% static 'js/gridrotator.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+	<script src="{% static 'js/modernizr.js' %}"></script>
+	
+
+</body>
+<script>
+
+$( document ).ready(function() {
+	
+    var hotel = document.getElementById("hotel");
+    if(hotel.options.length) {
+    	var hotel_selected = hotel.options[hotel.selectedIndex].value;
+    	initialize(hotel_selected);
+    }
+	
+	var calendars = {};
+	var thisMonth = moment().format('YYYY-MM');
+    // Events to load into calendar
+    var eventArray = [];
+
+    // The order of the click handlers is predictable. Direct click action
+    // callbacks come first: click, nextMonth, previousMonth, nextYear,
+    // previousYear, nextInterval, previousInterval, or today. Then
+    // onMonthChange (if the month changed), inIntervalChange if the interval
+    // has changed, and finally onYearChange (if the year changed).
+    $('.cal1').clndr({
+        events: eventArray,
+        clickEvents: {
+            click: function (target) {
+                console.log('Cal-1 clicked: ', target);
+            },
+            today: function () {
+                console.log('Cal-1 today');
+            },
+            nextMonth: function () {
+                console.log('Cal-1 next month');
+            },
+            previousMonth: function () {
+                console.log('Cal-1 previous month');
+            },
+            onMonthChange: function () {
+                console.log('Cal-1 month changed');
+            },
+            nextYear: function () {
+                console.log('Cal-1 next year');
+            },
+            previousYear: function () {
+                console.log('Cal-1 previous year');
+            },
+            onYearChange: function () {
+                console.log('Cal-1 year changed');
+            },
+            nextInterval: function () {
+                console.log('Cal-1 next interval');
+            },
+            previousInterval: function () {
+                console.log('Cal-1 previous interval');
+            },
+            onIntervalChange: function () {
+                console.log('Cal-1 interval changed');
+            }
+        },
+        multiDayEvents: {
+            singleDay: 'date',
+            endDate: 'endDate',
+            startDate: 'startDate'
+        },
+        showAdjacentMonths: true,
+        adjacentDaysChangeMonth: false
+    });
+
+});
+
+function isAvailable() {
+	var not_available = document.getElementById('roomNotAvailable')
+	var available = document.getElementById('roomAvailable')
+    if(not_available.checked == true) {
+    	alert('This will delete all promo prices updates on the selected room if within the not available status.');
+    	$("#roomPriceType").prop('disabled', true);
+    	$("#price").prop('disabled', true);
+    	// $("#airporttransport").prop('disabled', true);
+    	$("#discount").prop('disabled', true);
+    	$("#hoteltax").prop('disabled', true);
+    	$("#servicecharge").prop('disabled', true);
+    } else {
+    	$("#roomPriceType").prop('disabled', false);
+    	$("#price").prop('disabled', false);
+    	// $("#airporttransport").prop('disabled', false);
+    	$("#discount").prop('disabled', false);
+    	$("#hoteltax").prop('disabled', false);
+    	$("#servicecharge").prop('disabled', false);
+    }
+}
+
+function removeOptions(selectbox) {
+    var i;
+    for(i=selectbox.options.length-1;i>=0;i--) {
+        selectbox.remove(i);
+   	}
+}
+
+function initialize(hotel) {
+
+    getRooms(hotel, 'calendar');
+	getRooms(hotel, 'price');
+
+	// var room = document.getElementById("roomType");
+	// var room_selected = room.options[room.selectedIndex];
+	// alert(room_selected);
+	// getRoomInfo(room_selected, 'calendar');
+	// getRoomInfo(room_selected, 'price');
+}
+
+
+function getRooms(id, type) {
+	$.ajax({
+		url: '/getRooms/',
+		type: 'GET',
+		data: {
+			'hotelId': id
+		},
+		success: function(data) {
+			if(type == 'price') {
+				var roomType = document.getElementById("roomType");
+			}
+			else {
+				var roomType = document.getElementById("roomTypeCalendar");
+			}
+
+			removeOptions(roomType);
+			
+			for (entry in data) {
+				if (entry < data.length) {
+					var option = document.createElement("option");
+					option.text = data[entry].roomType;
+					option.value = data[entry].pk;
+					roomType.add(option, roomType[entry]);
+				}
+			}
+
+
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			console.log(errorThrown);
+			console.log(textStatus);
+
+        }
+	});
+}
+
+function getRoomInfo(id, type) {
+	$.ajax({
+		url: '/getRoomInfo/',
+		type: 'GET',
+		data: {
+			'roomId': id
+		},
+		success: function(data) {
+			if(type == 'price') {
+				$('#price').val(parseFloat(data['ratePerNight']));
+				// $('#airporttransport').val(parseFloat(data['airportTransfer']));
+				$('#discount').val(parseFloat(data['discountPercent']));
+				$('#hoteltax').val(parseFloat(data['hotelTax']));
+				$('#servicecharge').val(parseFloat(data['serviceCharge']));
+			}
+			else {
+				$('#label_price').text(data['ratePerNight']);
+				getRoomAvailability(id);
+			}
+			
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			console.log(errorThrown);
+			console.log(textStatus);
+
+        }
+	});
+}
+
+function getRoomAvailability(id) {
+	var thisMonth = moment().format('YYYY-MM');
+
+	var cal = $('.cal1').clndr();
+	var start = (cal.intervalStart).format('M/D/YYYY H:mm'); 
+	var end = (cal.intervalEnd).format('M/D/YYYY H:mm');
+	var start_epoch = moment(start, "M/D/YYYY H:mm").valueOf();
+	var end_epoch = moment(end, "M/D/YYYY H:mm").valueOf();
+
+	$.ajax({
+		url: '/getRoomAvailability/',
+		type: 'GET',
+		data: {
+			'roomId': id,
+			'start': start_epoch/1000,
+			'end': end_epoch/1000,
+		},
+		success: function(data) {
+			cal.options.events = [];
+			cal.render()
+			for(entry in data) {
+				if(entry < data.length) {
+					var start = (data[entry].start);
+					var end = (data[entry].end);
+					$('#label_season_price').text(data[entry].rate);
+					var cal_event = {
+						title: 'Multi-Day Event',
+						endDate: thisMonth + '-' + end,
+						startDate: thisMonth + '-' + start
+					}
+					var events = [cal_event];
+					if(end == 31) {
+						var cal_event2 = {
+						title: 'Multi-Day Event',
+						endDate: thisMonth + '-30',
+						startDate: thisMonth + '-' + start
+						}
+						var events = [cal_event, cal_event2];
+					}
+					
+					cal.addEvents(events);
+
+				}
+				
+			}
+			
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			console.log(errorThrown);
+			console.log(textStatus);
+
+        }
+	});
+}
+
+
+$('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+        || location.hostname == this.hostname) {
+
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+           if (target.length) {
+             $('html,body').animate({
+                 scrollTop: target.offset().top
+            }, 1000);
+            return false;
+        }
+    }
+});
+
+</script>
+</html>
+
